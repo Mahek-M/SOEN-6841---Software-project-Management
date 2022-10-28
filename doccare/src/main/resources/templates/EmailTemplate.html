@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+        <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+        <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+        <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+        <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+    
+        
+
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+        <style>
+            * {
+                font-family: 'Cairo', sans-serif;
+
+            }
+            .btn {
+                background-color: red;
+                color : white;
+                font-weight: 800;
+                padding : .5rem 2rem;
+                cursor: pointer;
+                transition: background-color .2s;
+            }
+            .btn:hover {
+                background-color: rgb(250, 108, 108);
+            }
+        </style>
+    
+        <!-- CSS Reset : BEGIN -->
+     </head>
+    
+    <body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;">
+    <center style="width: 100%; background-color: #f1f1f1;">
+        <div style="display: none; font-size: 1px;max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+            &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+        </div>
+        <div style="max-width: 600px; margin: 0 auto;" class="email-container">
+            <!-- BEGIN BODY -->
+            <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+                <tr>
+                    <td valign="top" class="bg_white" style="padding: 1em 2.5em 0 2.5em;">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td class="logo" style="text-align: center;">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr><!-- end tr -->
+                <tr>
+                    <td valign="middle" class="hero bg_white" style="padding: 2em 0 4em 0;">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="text" style="padding: 0 2.5em; text-align: left;">
+                                        <!-- <img src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAASCAYAAADomNYKAAAACXBIWXMAAAsSAAALEgHS3X78AAADLElEQVRYhc1XPXLaUBD+nHGZGZMTGDWMVJlOJXKXLtzA6lWEG4ScwKRQDT5BuEGgVIcqMWqQTxBxAmeWfOssj+cZMgYnO/NGj/ezu9/+veXi6ekJp6QozhMAMhYAGgBd+VZFJnPUQdgH0KHIVW+zbk+qwBF0WQfhGMAXHt32NusOlRMlr7n+tbdZj4/kmRh+4PxrHYQzAHMAN/ZwHYS3vc16ccDljHTpsL6iJ1oD+DWkYOSbEvCW4MEoeHtPH6wAQ4blAUVxPgHwmeslgFFVZIsozgWQ7F05d6zX+/yKAUY2rKM479MQz4auiuzCkbelvFkU58JjwDWRuQQw9ujyKPOqyCZWqXdmvjWghwaYKpZSATn3QK9NojiXdJhSSElBPlKvfwLwsw7CVR2EKdcmBLwlgGUU50Mjb0n+UxpIqaE8McCMe1PuPbB23FNHL+gVBdzQQzCKgqGo5zQS5OxHzh+rIhOhMw9g9DZrAfbNGEXuTglceadVkSUyTGTM+Hvp6CE0YtqARtO9ljpqNA3NnT3QMLmmIWPzTRkOnEL1nl9vSjjAJayFT2DAd01Y+/LbXes6vxvP3jV19NYlN6fFs3dm7mNe0sKuUoMozkcmSvaoDsKh8R7Ms9XQwGLMMfPV8k2jOG/N3ZXxnI2IknugQUeGh66/CFpp7oTFnIwkLH/oIgtOyfX7A7R/KDFFSak0MgdmCH0wFV/5lixWet9G3IzgVJfvZu/WYrvkYVloe5u1WP1CN+sgbLXJkOaChUJHY7yf0EAdY1XdW5j5nHc7XN81J9XvIqSNzI5HVWQtG52+aXb2PMYa0fD8DpRzp+WdvXsn78jegsyTdatgjyG+QI3vnT4J8cmR8J+fgb16zlf49ojPVcrUlDd7cTZP06pTFhUBPv8br5xAfkKwWpdSdcA5QXfYdNyZ5S1zczeqInNz9LXytLYk5rmSJkU6ueeoOHtOUxltInzv5tIUxRVDtn3JICymHRa9rimsLu/n1tTl8aaFjApryPkM8FrSPzNj/Svro39WvWmAxAz3z8qxVJp0Oapo/jdPFtNAQ1W7Nbe7s93a7v21uXoUAfgFheJU/JarRXcAAAAASUVORK5CYII=" alt = "Something went wrong"> -->
+
+                                        <h3>Dear <p style = "display: inline-block;" th:text="${firstName}">,</h3>
+                                        <h3>We're excited to have you get started. First, you need to confirm your account. Just press the button below.</h3>
+                                        <p><a th:href="${link}" class="btn btn-primary" class = "btn">Validate Account</a></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!-- <div class="text" style="padding: 0 2.5em; text-align: center;">
+                                        <h3>if you experience any issues with the button above, copy and paste the URL below into your web browser.</h3>
+                                        <p th:text="${verificationURL}"></p>
+                                    </div> -->
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr><!-- end tr -->
+                <!-- 1 Column Text + Button : END -->
+            </table>
+            
+    
+        </div>
+    </center>
+    </body>
+    </html>
