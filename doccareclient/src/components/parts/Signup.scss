@@ -1,0 +1,97 @@
+@import "Signin.scss";
+
+.signup-option-container {
+    display: flex;
+    flex-wrap: wrap;
+
+    background-color : var(--paste-color);
+    height : 25rem;
+    width: 35rem;
+    border-radius: 1rem;
+    padding : 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    &__user-option {
+        padding : 2.5rem;
+        width: 10rem;
+        height : 2.5rem;
+        text-align: center;
+        background-color: white;
+        color : var(--dark-blue-color);
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+        
+    }
+}
+.signup-form {
+
+    background-color : var(--paste-color);
+    margin-top: 5rem;
+    height : 40rem;
+    width: 35rem;
+    border-radius: 1rem;
+    padding : 2rem;
+    // display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    &__radio-grp {
+        display: flex;
+        gap : 1rem;
+        color : white;
+        border:none;
+        font-size: 1.5rem; 
+    }
+
+    &__next-btn {
+        background-color :white;
+        color : var(--dark-blue-color);
+        padding : 1rem;
+        width : 5rem;
+        height : 1.5rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border:none;
+        font-weight: 800;
+        align-self: flex-end;
+        cursor:pointer;
+    }
+
+    &__img {
+        margin-bottom: 4rem;
+        margin: 0;
+        input {
+            display: none;
+        }
+        display: flex;
+        justify-content: center;
+        // background-image: url();
+        // transform: scale(10%);
+        // margin-bottom :0px;
+        img {
+            width: 5rem;
+            height: 5rem;
+            cursor: pointer;
+            top: 0;
+            bottom: 0;
+            left : 0;
+            right : 0;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+        
+
+        img:hover {
+            opacity: .5;            
+        }
+    }
+}
