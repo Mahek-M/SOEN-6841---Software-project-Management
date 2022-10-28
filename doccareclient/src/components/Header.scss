@@ -1,0 +1,38 @@
+@import "root.scss";
+
+.nav {
+    display: flex;
+    padding: var(--outter-margin);
+    padding-top: 1rem;
+    padding-bottom : 1rem;
+    box-shadow: 0px 4px 4px 0 rgb(0 0 0 / 0.2);
+    gap: 2rem;
+    justify-content: space-between;
+    font-weight: bold;
+    a {
+        text-decoration: none;
+        color : var(--dark-blue-color);
+    }
+
+
+    &__navigation-item-grp {
+        gap : 2rem;        
+        color : var(--dark-blue-color);
+        display: flex;
+
+    }
+
+    &__navigation-item-grp__signup-login-grp {
+        display: flex;
+        gap : 5px;
+
+        a {
+            text-decoration: none;
+            color : var(--dark-blue-color);
+            transition: color .1s;
+        }
+        a:hover {
+            color : var(--mild-sky-color);
+        }
+    }
+}

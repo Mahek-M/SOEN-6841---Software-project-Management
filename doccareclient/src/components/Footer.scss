@@ -1,0 +1,39 @@
+.footer-container {
+    padding : var(--outter-margin);
+    background-color: var(--dark-blue-color);
+    color : var(--white-color);
+    height: 15rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    padding-bottom : 2rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    &__info-grp {
+        display: flex;
+        flex-direction: column;
+        
+        h4 {
+            margin-top: auto;
+        }
+        
+    }
+
+    &__social-media-link-grp {
+        display: flex;
+        align-items: center;
+        gap : 1.5rem;
+
+        img {
+            height: 2rem;
+            width: 2rem;
+        }
+        img:hover {
+            border-bottom: 3px solid white;
+            padding-bottom: 3px;
+            cursor: pointer;
+        }
+    }
+
+}

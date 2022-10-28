@@ -1,0 +1,9 @@
+Fonts used in this design:
+
+Font: Poppins
+Author: Indian Type Foundry,Jonny Pinhorn
+Url: https://fonts.google.com/specimen/Poppins
+
+Font: Montserrat
+Author: Julieta Ulanovsky,Sol Matas,Juan Pablo del Peral,Jacques Le Bailly
+Url: https://fonts.google.com/specimen/Montserrat

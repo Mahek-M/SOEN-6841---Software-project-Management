@@ -1,0 +1,84 @@
+.landing-body-container {
+    margin-top: 1.5rem;
+
+    &__geting-started-container {
+        margin: var(--outter-margin);
+        padding : 0 2rem;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--mild-pink-color);
+        height: 20rem;
+
+        &__text-button-grp {
+            color :white;
+            font-weight:800;
+            
+            & h1 {
+                font-size: 2.5rem;
+                line-height: 4rem;
+            }
+            
+            & a {
+                display: block;
+                text-decoration: none;
+                background-color: var(--paste-color);;
+                color : var(--white-color);
+                border-radius: .4rem;
+                width: 8rem;
+                padding : .2rem 0;
+                text-align: center;
+            }
+            
+        }
+
+        &__image {
+            width: 16rem;
+            height: 15rem;
+            border-radius: 50%;
+        }
+
+       
+    }
+    &__doctor-profile-container {
+        text-align: center;
+        & h1 {
+            color : rgb(44, 44, 44);
+            font-weight: bold;
+        }
+
+        &__card-grp {
+            display: flex;
+            gap : 5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding : var(--outter-margin);
+        }
+    }
+
+    &__pricing-container {
+        &__pricing {
+            display: flex;
+            gap: 5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color : rgb(44, 44, 44);
+            margin-top: 4rem;
+        }
+    }
+
+    .swiper {
+        width: 600px;
+        height: 300px;
+      }
+
+      &__caro {
+        margin: 3rem .2rem;
+      }
+}
