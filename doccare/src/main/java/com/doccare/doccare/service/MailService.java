@@ -43,7 +43,7 @@ public abstract class MailService {
     protected SimpleMailMessage templateMailMessage;
 
     public abstract boolean sendMail(String varificationLink,String mail,String name) throws MessagingException;
-    public abstract boolean sendOtpMail(String extractedOtpCode,String mail,String name) throws MessagingException;
+    
 
 
     // method are not planned yet 
