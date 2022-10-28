@@ -22,6 +22,7 @@ import PatientListForManager from "./PatientListForManager";
 import CounselorListForManager from "./CounselorListForManager";
 import Setting from "./Setting";
 import UnderDevelopment from "./UnderDevelopment";
+import AppointedpatientForCounselorCon from "./AppointedPatientListForCounselorCon";
 
 
 const AdminPanel = ()=> {
@@ -219,7 +220,7 @@ const AdminPanel = ()=> {
                 {(userType === "manager") ? <Routes>
                     <Route path = "/setting" element = {<Setting/>}/>
 
-                    <Route path = "/" element = {<AppointedpatientForCounselor/>}/>
+                    <Route path = "/" element = {<AppointedpatientForCounselorCon/>}/>
                     <Route path = "/doctors" element = {<DoctorListForManager/>}/>
                     <Route path = "/patients" element = {<PatientListForManager/>}/>
                     <Route path = "/counselors" element = {<CounselorListForManager/>}/>
