@@ -93,7 +93,37 @@ public class GoogleMailService extends MailService {
         // return false;
     }
 
-    
+    @Override
+    public boolean sendOtpMail(String extractedOtpCode, String mail, String name) throws MessagingException {
+        super.setTo(mail);
+        super.setFrom("mediscopeofficial@gmail.com");
+        super.setDisplayName("MediScope");
+
+
+        
+        try {
+            Map<String,Object> con = new HashMap<>();
+            con.put("firstName",name);
+            con.put("otp",extractedOtpCode);
+
+            super.setContext(con); // don't know if it is neccessary as I will use the moment i set it. so need to think about it . 
+            context = new Context();
+            context.setVariables(getContext());
+            super.setContent(this.tmeplateEngine.process("OtpEmailTemplate.html", context));
+
+
+            this.config(con);
+            this.mimeMessageHelper.setSubject("MediScope otp code");
+            super.mailSender.send(this.message);
+
+            return true;
+
+        } catch(MailException e) {
+            e.printStackTrace();
+            
+            return false;
+        }
+    }
 
 
 
