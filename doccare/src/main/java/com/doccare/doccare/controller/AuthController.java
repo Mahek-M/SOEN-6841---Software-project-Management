@@ -97,21 +97,14 @@ public class AuthController {
     //     return this.authService.verify(code);
     // }
 
-    @GetMapping("/forgetpassword")
-    public ResponseEntity<VerificationCodeModel> forgetPassword(@RequestParam String username) {
-        logger.info(username);
-        return ResponseEntity.ok(this.authService.forgetPassword(username));
-    }
+  
 
     @GetMapping("/resetpass")
     public ResponseEntity<User> resetPass(@RequestParam String code, @RequestParam String password) {
         this.logger.info("From auth : "+password);
         return ResponseEntity.ok(this.authService.resetPassword(code,password));
     }
-    @GetMapping("/verifyforgetpassword")
-    public ResponseEntity<Integer> verifyForgetPassword (@RequestParam String code) {
-        return ResponseEntity.ok(this.authService.verifyForgetPassword(code));
-    }
+    
 
     @GetMapping("/me") 
     public ResponseEntity<User> getMe() {
