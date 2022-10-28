@@ -24,8 +24,8 @@ public interface AuthService {
     public User verify(String verificationCode);
     public User resetPassword(String code,String newPassword);
 
-    public Integer verifyForgetPassword(String code);
-    public VerificationCodeModel forgetPassword(String username);
+    
+    
     public DoctorRegNo getDoctorRegNo();
     public CounselorRegModel getCounselorRegNo();
     public String generateOtpCode(String username);

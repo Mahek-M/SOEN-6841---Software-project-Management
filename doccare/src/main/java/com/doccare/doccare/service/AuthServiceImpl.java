@@ -265,39 +265,7 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
-    @Override
-    public VerificationCodeModel forgetPassword(String username) {
-        User user = this.userRepository.findByEmail(username);
-        if (user == null) {
-            return null;
-        }
-        String verificationCode = RandomString.make(64);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("E-MM-dd'T'HH:mm:ss.SSSZ-yyyy");
-        
-        Calendar currentTime = Calendar.getInstance();
-        currentTime.add(Calendar.MINUTE, 5);
-        String currentTimeString = dateFormatter.format(currentTime.getTime()).toString();
-
-        String timeDateBase64 = Base64.getEncoder().encodeToString(currentTimeString.getBytes());
-        verificationCode = verificationCode + "."+timeDateBase64;
-
-        if (user != null) {
-            user.setVerificationCode(verificationCode);
-        }
-        this.userRepository.save(user);
-
-        VerificationCodeModel code = new VerificationCodeModel();
-        code.setCode(verificationCode);
-
-        try {
-            this.mailService.sendResetPasswordMail("http://localhost:4445/api/v1/redirectforgetpass?code="+verificationCode, user.getEmail(), user.getName());
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return code;
-    }
-
+   
     @Override
     public User resetPassword(String code,String newPassword) {
         if (this.isVerificationCodeExpired(code)) {
@@ -315,14 +283,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
 
-    @Override
-    public Integer verifyForgetPassword(String code) {
-        if (this.isVerificationCodeExpired(code)) {
-            return 199;
-        }
-        
-        return 200;
-    }
+  
 
     @Override
     public DoctorRegNo getDoctorRegNo() {
