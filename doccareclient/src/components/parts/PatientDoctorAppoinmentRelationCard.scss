@@ -1,0 +1,71 @@
+.patient-doctor-appoinment-container {
+    height: 15rem;
+    width: 35rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    &__body{
+        background-color: var(--paste-color);
+        height: 13rem;
+        width: 100%;
+        display: flex;
+
+        &__doc-img {
+            width : 13.5rem;
+            height : 100%;
+        }
+
+        &__patient-img {
+            width: 13.5rem;
+            height : 100%;
+            margin-left : auto;
+        }
+        &__relation {
+            height: 100%;
+            width: 9rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            span {
+                color : white;
+                font-weight: 800;
+                align-self: center;
+            }
+
+            img {
+                align-self: center;
+                width: 3rem;
+                height: 3rem;
+                filter: invert(94%) sepia(95%) saturate(2%) hue-rotate(238deg) brightness(105%) contrast(100%);
+
+            }
+        }
+    }
+
+    &__footer {
+        justify-self: flex-end;
+        background-color: var(--dark-blue-color);
+        height:2rem;
+        width: 100%;
+        color : white;
+        display: flex;
+        justify-content: space-between;
+        padding-left:1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+    }
+
+    &__doc-img {
+
+    }
+
+    &__relation {
+
+    }
+
+    &__patient-img {
+
+    }
+}

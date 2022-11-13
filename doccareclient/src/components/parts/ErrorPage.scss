@@ -1,0 +1,20 @@
+.error-page-container{
+    padding: var(--outter-margin);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+
+    &__image-text-grp {
+        display: flex;
+        flex-direction: column;
+        img {
+            height: 20rem;
+            width: 100%;
+        }
+        h1 {
+            font-size: 5rem;
+            color : var(--dark-blue-color);
+        }
+    }
+}
