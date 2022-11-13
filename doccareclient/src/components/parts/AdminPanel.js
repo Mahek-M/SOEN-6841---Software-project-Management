@@ -1,6 +1,6 @@
 import React from "react";
 import { useState,useReducer,useEffect } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Navigate, NavLink, redirect, Route, Routes } from "react-router-dom";
 
 import "./AdminPanel.scss";
 import profile from "../../assets/images/profile.jpg";
@@ -9,26 +9,39 @@ import settingBtn from "../../assets/svg/setting.svg";
 import closeIcon from "../../assets/svg/cancel.svg";
 
 import CounselorListForPatientAdminPanel from "./CounselorListForPatientAdminPanel";
-import AppoinmentHistoryForPatient from "./AppoinmentHistoryForPatient";
-import PatientAppoinmentList from "./PatientAppionmentList";
+
 import AppoinmentPatientList from "./ApppoinmentPatientList";
-import AppoinmentHistoryForDoctor from "./AppoinmentHistoryForDoctor";
-import AppointedPatientForDoctor from "./AppointedPatientForDoctor";
+
 import AppointedpatientForCounselor from "./AppointedPatientListForCounselor";
-import AvailableDocForCounselor from "./AvailableDocForCounselor";
-import AppointedPatientDoctorForCounselor from "./AppointedPatientDoctorForCounselor";
 import DoctorListForManager from "./DoctorListForManager";
+import DoctorListForCounselor from "./DoctorListForCounselor";
+
 import PatientListForManager from "./PatientListForManager";
+import PatientListForCounselor from "./PatientListForCounselor";
+
 import CounselorListForManager from "./CounselorListForManager";
 import Setting from "./Setting";
 import UnderDevelopment from "./UnderDevelopment";
 import AppointedpatientForCounselorCon from "./AppointedPatientListForCounselorCon";
+import axios from "axios";
+import AssesMentPage from "./AssesmentPage";
+import AvailableDocForCounselor from "./AvailableDocForCounselor";
+import AppointedPatientForDoctor from "./AppointedPatientForDoctor";
+
+import AppointedPatientDoctorForCounselor from "./AppointedPatientDoctorForCounselor";
+import MyHistory from "./MyHistoryPart";
+import AppoinmentHistoryForPatient from "./AppoinmentHistoryForPatient";
+import AppoinmentHistoryForDoctor from "./AppoinmentHistoryForDoctor";
+import AssesmentsPart from "./AssesmentsPart";
+import AppointedPatientForCounselor2 from "./AppointedPatientForCounselor2";
+
 
 
 const AdminPanel = ()=> {
     const [profileImage, setProfileImage] = useState(null);
     const [userType, setUserType] = useState("");
     const [bgColor , setBgColor] = useState("#558D96");
+    const [isAssesmentExists,setIsAssesmentExists] = useState(false);
 
     var color = {
         "background-color":"#558D96"
@@ -77,6 +90,13 @@ const AdminPanel = ()=> {
         userTypeDispatcher({"type":localStorage.getItem("role")});
 
         document.getElementById("panel-name").textContent = localStorage.getItem("name");
+
+        axios.get("http://localhost:4445/api/v1/isassesmentavail",{headers :{
+            'authorization': "Bearer "+localStorage.getItem("token")
+        }}).then(res => {
+            // alert(res.data);
+            setIsAssesmentExists(res.data);
+        });
     });
 
     const showModal = ()=> {
@@ -91,6 +111,23 @@ const AdminPanel = ()=> {
         event.preventDefault();
     }
     
+    const [prevNavItem, setPrevNavItem] = useState(null);
+
+    const toggleNavItem =(event)=> {
+        if (prevNavItem != null) {
+            prevNavItem.target.style.border = "none";
+            // prevNavItem.target.onmouseover = function(){
+            //     this.style.borderBottom = "3px solid white";
+            // }
+
+            prevNavItem.target.onmouseleave = function(){
+                this.style.borderBottom = "none";
+            }
+        }
+        event.target.style.borderBottom = "3px solid white";
+        setPrevNavItem(event);
+    }
+
     return (
         <div className = "admin-panel-container">
             <div className ="admin-panel-container__left-side" style = {{"background-color":bgColor}}>
@@ -103,28 +140,33 @@ const AdminPanel = ()=> {
                     <h2 style ={{"color":"white"}} id = "panel-name"></h2>
                 </div>
                 {(userType === "patient") ? <div className = "admin-panel-container__left-side__nav">
-                    <Link to = "/">Counselors</Link>
-                    <Link to = "/history">Appoinment History</Link>
-                    <Link to = "/myappoinment">My Appoinments</Link>
+                    {(isAssesmentExists) ? <></> : <NavLink to = "/fillassesment" end className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Fill assesment</NavLink>}
+                    <NavLink to = "/history" end className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Appoinment History</NavLink>
+                    <NavLink to = "/myappoinment"  className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>My Appoinments</NavLink>
+                    
                 </div> : <></>}
 
                 {(userType === "doctor") ? <div className = "admin-panel-container__left-side__nav">
-                    <Link to = "/">Appoinment Requests</Link>
-                    <Link to = "/appointedpatients">Appointed patients</Link>
-                    <Link to = "/history">Appoinment History</Link>
+                    <NavLink to = "/" end className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Appoinment Requests</NavLink>
+                    {/* <Link to = "/appointedpatients">Appointed patients</Link> */}
+                    <NavLink to = "/patients" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Patients</NavLink>
+                    <NavLink to = "/history" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Appoinment History</NavLink>
+                    
                 </div> : <></>}
 
                 {(userType === "counselor") ? <div className = "admin-panel-container__left-side__nav">
-                    <Link to = "/">Patients</Link>
+                    <NavLink to = "/" end className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Patients</NavLink>
+                    <NavLink to = "/request" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Appoinment request</NavLink>
                     <Link to = "/appointedpatients">Appointed Patients</Link>
-                    <Link to = "/doctors">Doctors</Link>
+                    <NavLink to = "/doctors" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Doctors</NavLink>
+                    
                 </div> : <></>}
 
                 {(userType === "manager") ? <div className = "admin-panel-container__left-side__nav">
-                    <Link to = "/report">Reports</Link>
-                    <Link to = "/">Doctors</Link>
-                    <Link to = "/patients">Patients</Link>
-                    <Link to = "/counselors">Counselors</Link>
+                    <NavLink to = "/report" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Reports</NavLink>
+                    <NavLink to = "/doctors" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Doctors</NavLink>
+                    <NavLink to = "/patients" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Patients</NavLink>
+                    <NavLink to = "/counselors" className = {({ isActive }) =>isActive ? 'admin-panel-container__left-side__nav__active' : 'admin-panel-container__left-side__nav__inactive'}>Counselors</NavLink>
                 </div> : <></>}
 
                 <div className = "admin-panel-container__left-side__bottom-btn-grp">
@@ -193,28 +235,44 @@ const AdminPanel = ()=> {
                 {(userType === "patient") ? <Routes>
                     <Route path = "/setting" element = {<Setting/>}/>
 
-                    <Route path = "/" element = {<CounselorListForPatientAdminPanel/>}/>
-                    <Route path = "/history" element = {<UnderDevelopment/>}/>
+                    {/* <Route path = "/" element = {(isAssesmentExists) ? <CounselorListForPatientAdminPanel/> : <AssesMentPage/>}/> */}
+                    <Route path = "/" element = {(isAssesmentExists) ? <Navigate to = "/history" replace = {true}/> : <Navigate to = "/fillassesment" replace = {true}/> }/>
+                    <Route path = "/history" element = {<AppoinmentHistoryForPatient/>}/>
+                    <Route path  = "/fillassesment" element = {(isAssesmentExists) ? <Navigate to = "/" replace = {true}/> : <AssesMentPage/>}/>
                     <Route path = "/myappoinment" element = {<UnderDevelopment/>}/>
+                    
 
                     </Routes> : <></>}
 
                 {(userType === "doctor") ? <Routes>
                 <Route path = "/setting" element = {<Setting/>}/>
 
-                <Route path = "/" element = {<AppoinmentPatientList/>}/>
-                <Route path = "/history" element = {<UnderDevelopment/>}/>
-                <Route path = "/appointedpatients" element = {<UnderDevelopment/>}/>
+                <Route path = "/" element = {<AppoinmentPatientList assesment = {true}/>}/>
+                
+                <Route path = "/appointedpatients" element = {<AppointedPatientForDoctor/>}/>
+                <Route path = "/patients" element = {<PatientListForCounselor/>} />
+                <Route path = "/history" element = {<AppoinmentHistoryForDoctor/>}/>
+                <Route path = "/assesments:username" element = {<AssesmentsPart role = "doctor"/>}/>
+
+
 
                 </Routes> : <></>}
 
                 {(userType === "counselor") ? <Routes>
                     <Route path = "/setting" element = {<Setting/>}/>
 
-                    <Route path = "/" element = {<AppointedpatientForCounselor/>}/>
+                    <Route path = "/" element = {<PatientListForCounselor/>}/>
+                    <Route path = "/request" element = {<AppointedpatientForCounselor assesment = {true}/>}/>
+
                     <Route path = "/history" element = {<UnderDevelopment/>}/>
-                    <Route path = "availabledoc" element = {<UnderDevelopment/>}/>
-                    <Route path = "/appointedpatients" element = {<UnderDevelopment/>}/>
+                    <Route path = "availabledoc:patientId" element = {<AvailableDocForCounselor/>}/>
+                    {/* <Route path = "/appointedpatients" element = {<AppointedPatientDoctorForCounselor/>}/> */}
+                    <Route path = "/appointedpatients" element = {<AppointedPatientForCounselor2/>}/>
+
+                    <Route path = "/doctors" element = {<DoctorListForCounselor/>}/>
+                    <Route path = "/assesments:username" element = {<AssesmentsPart role = "counselor"/>}/>
+
+                    
                 </Routes> : <></>}
 
                 {(userType === "manager") ? <Routes>

@@ -34,6 +34,14 @@
             flex-direction: column;
             margin-top: 50%;
 
+            &__active {
+                border-bottom: 3px solid white;
+            }
+
+            &__inactive {
+                border-bottom: none;
+            }
+
             a {
                 display: inline-block;
                 color : white;
@@ -44,6 +52,10 @@
                 line-height: 3rem;
                 width: 10rem;
                 transition: border .1s;
+
+                &__active {
+                    border-bottom: 3px solid white;
+                }
             }
 
             a:hover {
