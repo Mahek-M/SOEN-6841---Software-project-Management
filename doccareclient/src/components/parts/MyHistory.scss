@@ -1,0 +1,20 @@
+.my-history-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap : 1.4rem;
+
+    &__history-item {
+        background-color : red;
+        color : white;
+        font-weight: 800;
+        padding : 1rem;
+        width: 80%;
+        transition: transform .2s;
+
+        &:hover { 
+            transform: scale(110%);
+        }
+    }
+}
