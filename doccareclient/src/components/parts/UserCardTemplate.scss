@@ -7,7 +7,84 @@
     flex-direction: column;
     align-items: center;
     transition: transform .2s;
+    position: relative;
 
+    &__assesment-modal {
+        display: none;
+        position: absolute;
+        background-color: white;
+        // height : 33rem;
+        width: 40rem;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        z-index: 1;
+        padding : 2rem;
+
+        &__table-header {
+            margin-top: .5rem;
+            display: flex;
+            justify-content: space-around;
+            background-color: black;
+            color: rgb(111, 91, 91);
+            font-weight: 800;
+        }
+        &__table-body {
+            display: flex;
+            justify-content: space-between;
+            background-color: red;
+            padding : 1rem;
+            color : white;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+    }
+   
+
+    &__drop-container {
+        
+        &__three-dot {
+            height : 2rem;
+            position: absolute;
+            top : 0;
+            background-color: white;
+            border-radius: 50%;
+            padding : .5rem;
+            left: .5rem;
+            top : .5rem;
+        }
+
+        &__drop-down {
+            z-index: 1000;
+            position : absolute;
+            height : 2rem;
+            width : 9rem;
+            background-color : white;
+            left : 3.5rem;
+            top: 1rem;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            display: none;
+    
+            a {
+                font-size: 0.8rem;
+                text-decoration: none;
+            }
+    
+            span:hover {
+                background-color: darkblue;
+                color : white;
+                font-weight: 800;
+                width: 100%;
+                cursor: pointer;
+            }
+    
+        }
+    
+        &:hover &__drop-down {
+            display: block;
+        }
+    }
+
+    
     &__header {
         color : white;
         font-size: 1rem;

@@ -97,6 +97,7 @@ const Signin = ()=> {
                     localStorage.setItem("isLoggedIn",true);
                     localStorage.setItem("email",res.data.email);
                     localStorage.setItem("address",res.data.address.address);
+                    localStorage.setItem("id",res.data.id);
 
                     // clean up the role_temp
                     // localStorage.removeItem("role_temp");
@@ -204,6 +205,8 @@ const Signin = ()=> {
                     localStorage.setItem("isLoggedIn",true);
                     localStorage.setItem("email",res.data.email);
                     localStorage.setItem("address",res.data.address.address);
+                    localStorage.setItem("id",res.data.id);
+
 
                     localStorage.setItem("docRegNo",res.data.docRegNo);
                     localStorage.setItem("conRegNo",res.data.counselorRegNo);
@@ -275,7 +278,7 @@ const Signin = ()=> {
                 <input className = "signin-container__signin-form__form-control" type = "submit" value = "Submit" onClick={submitOtp}/>
            </form>
            <Link to = "/signup">Don't have any account ? signup</Link>
-           {/* <Link to = "/forgetpass">Forgot password ?</Link> */}
+           <Link to = "/forgetpass">Forgot password ?</Link>
 
         </div>
     );

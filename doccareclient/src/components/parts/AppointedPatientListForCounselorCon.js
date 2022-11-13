@@ -19,7 +19,7 @@ const AppointedpatientForCounselorCon = ()=> {
     return (
         <div className = "appointed-patient-container">
             {
-                (patientList !=null) ? patientList.map(item=> (<PatientCounselorCard image = {item.profileImage.image} designation={item.role[0].role} name = {item.name} qualification = "PHD| MBBS |Other degree" card_type = "remove"/>)): <></>
+                (patientList !=null) ? patientList.map(item=> (<PatientCounselorCard image = {(item.profileImage != null) ? item.profileImage.image : ""} designation={item.role[0].role} name = {item.name} qualification = "PHD| MBBS |Other degree" id = {item.email} card_type = "remove"/>)): <></>
             }
             {/* <PatientCounselorCard designation="Patient" name = "John Doe" qualification = "" card_type = "forward"/>
             <PatientCounselorCard designation="Patient" name = "John Doe" qualification = "" card_type = "forward"/>
