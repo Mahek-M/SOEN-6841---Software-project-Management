@@ -1,0 +1,20 @@
+.assesment-part-container {
+    width: 80vw;
+    td ,th{
+        padding : 1rem;
+    }
+    th {
+        background-color : #0D2557;
+        color : white;
+        font-weight: 800;
+    }
+
+    td:hover {
+        background-color: var(--paste-color);
+    }
+}
+
+table , td, th { 
+    border : 1px solid black;
+    border-collapse: collapse;
+}
