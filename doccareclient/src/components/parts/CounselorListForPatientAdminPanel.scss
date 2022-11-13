@@ -1,0 +1,9 @@
+.counselor-list-for-patient-admin-panel {
+    &__counselor-profile-grp {
+        display: flex;
+        flex-wrap: wrap;
+        gap:1rem;
+        margin: 2rem 0;
+        justify-content: center;
+    }
+}
