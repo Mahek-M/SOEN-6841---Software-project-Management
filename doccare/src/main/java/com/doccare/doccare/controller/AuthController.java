@@ -18,9 +18,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.doccare.doccare.dao.UserRepository;
 import com.doccare.doccare.model.Address;
+import com.doccare.doccare.model.AssesmentAnswer;
+import com.doccare.doccare.model.AssesmentAnswerGroup;
 import com.doccare.doccare.model.AuthRequest;
 import com.doccare.doccare.model.CounselorRegModel;
 import com.doccare.doccare.model.DoctorRegNo;
@@ -97,14 +101,22 @@ public class AuthController {
     //     return this.authService.verify(code);
     // }
 
-  
+
+    @GetMapping("/forgetpassword")
+    public ResponseEntity<VerificationCodeModel> forgetPassword(@RequestParam String username) {
+        logger.info(username);
+        return ResponseEntity.ok(this.authService.forgetPassword(username));
+    }
 
     @GetMapping("/resetpass")
     public ResponseEntity<User> resetPass(@RequestParam String code, @RequestParam String password) {
         this.logger.info("From auth : "+password);
         return ResponseEntity.ok(this.authService.resetPassword(code,password));
     }
-    
+    @GetMapping("/verifyforgetpassword")
+    public ResponseEntity<Integer> verifyForgetPassword (@RequestParam String code) {
+        return ResponseEntity.ok(this.authService.verifyForgetPassword(code));
+    }
 
     @GetMapping("/me") 
     public ResponseEntity<User> getMe() {
@@ -190,4 +202,33 @@ public class AuthController {
         return ResponseEntity.ok(this.authService.getAllCounselors());
     }
     
+    @DeleteMapping(value = "/user")
+    public ResponseEntity<Integer> deleteUser(@RequestParam String username) {
+        return ResponseEntity.ok(this.authService.deleteUser(username));
+    }
+
+    @PutMapping(value = "/assesment")
+    public ResponseEntity<AssesmentAnswerGroup> saveAssesmentAnswers(@RequestBody List<AssesmentAnswer> assesmentAnswersList) {
+        return ResponseEntity.ok(this.authService.saveAssesmentAnswers(assesmentAnswersList));
+    }
+
+    @GetMapping(value = "/isassesmentavail")
+    public ResponseEntity<Boolean> checkIfTheUserHasAssesmentFilled() {
+        return ResponseEntity.ok(this.authService.isIhavefilledTheAssesment());
+    }
+
+    @GetMapping(value = "/assesments")
+    public ResponseEntity<List<AssesmentAnswer>> getAssesmentAnswers(@RequestParam String username) {
+        return ResponseEntity.ok(this.authService.getAssesmentAnswers(username));
+    }
+
+    @GetMapping(value = "/assesmentusers")
+    public ResponseEntity<List<User>> getUsersWithAssesmentFilled () {
+        return ResponseEntity.ok(this.authService.getUsersWithAssesmentFilled());
+    }
+
+    @DeleteMapping(value= "/rejectfromcon")
+    public ResponseEntity<Boolean> rejectAppoinmentFromCounselor(@RequestParam String username) {
+        return ResponseEntity.ok(this.authService.rejectAppoinmentFromCounselor(username));
+    }
 }
