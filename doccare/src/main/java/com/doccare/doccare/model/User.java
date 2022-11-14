@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -75,4 +76,16 @@ public class User {
     private boolean enabled;
     @Column(name ="otp_code")
     private String otpCode;
+    
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonIgnore
+    private AssesmentAnswerGroup assesmentAnswerGroup;
+
+    @Column(name = "doc_patient_session")
+    private Long docPatientSessionId;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    // @JsonManagedReference
+    @JsonIgnore
+    private List<History> histories;
 }
