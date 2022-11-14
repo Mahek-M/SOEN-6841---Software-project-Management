@@ -73,6 +73,7 @@ public class GoogleMailService extends MailService {
             Map<String,Object> con = new HashMap<>();
             con.put("firstName",name);
             con.put("link",verificationLink);
+            this.logger.info("Value of link : "+verificationLink);
             
 
             super.setContext(con); // don't know if it is neccessary as I will use the moment i set it. so need to think about it . 
@@ -91,6 +92,38 @@ public class GoogleMailService extends MailService {
             return false;
         }
         // return false;
+    }
+
+    @Override
+    public boolean sendResetPasswordMail(String verificationLink, String mail, String name) throws MessagingException {
+        super.setTo(mail);
+        super.setFrom("mediscopeofficial@gmail.com");
+        super.setDisplayName("MediScope");
+
+
+        
+        try {
+            Map<String,Object> con = new HashMap<>();
+            con.put("firstName",name);
+            con.put("link",verificationLink);
+
+            super.setContext(con); // don't know if it is neccessary as I will use the moment i set it. so need to think about it . 
+            context = new Context();
+            context.setVariables(getContext());
+            super.setContent(this.tmeplateEngine.process("ForgetPasswordEmailTemplate.html", context));
+
+
+            this.config(con);
+            this.mimeMessageHelper.setSubject("MediScope Reset password");
+            super.mailSender.send(this.message);
+
+            return true;
+
+        } catch(MailException e) {
+            e.printStackTrace();
+            
+            return false;
+        }
     }
 
     @Override
