@@ -34,13 +34,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.doccare.doccare.controller.AuthController;
+import com.doccare.doccare.dao.AssesmentAnswerGroupRepository;
+import com.doccare.doccare.dao.AssesmentAnswerRepo;
 import com.doccare.doccare.dao.CounselorRegNoRepository;
 import com.doccare.doccare.dao.DoctorRegNoRepository;
 import com.doccare.doccare.dao.ProfileImageRepository;
 import com.doccare.doccare.dao.RoleRepository;
 import com.doccare.doccare.dao.UserRepository;
+import com.doccare.doccare.model.AssesmentAnswer;
+import com.doccare.doccare.model.AssesmentAnswerGroup;
 import com.doccare.doccare.model.CounselorRegModel;
 import com.doccare.doccare.model.DoctorRegNo;
+import com.doccare.doccare.model.History;
 import com.doccare.doccare.model.JWTTokenModel;
 import com.doccare.doccare.model.JsonWebTokenResponse;
 import com.doccare.doccare.model.ProfileImage;
@@ -77,6 +82,10 @@ public class AuthServiceImpl implements AuthService{
     private CounselorRegNoRepository counselorRegNoRepository;
     @Autowired
     private ProfileImageRepository profileImageRepo;
+    @Autowired
+    private AssesmentAnswerGroupRepository assesmentAnswerGroupRepository;
+    @Autowired
+    private AssesmentAnswerRepo assesmentAnswerRepo;
     // @Autowired
     // private BlackListedJWTTokenRepository blackListedJWTTokenRepository;
     // @Autowired
@@ -150,6 +159,15 @@ public class AuthServiceImpl implements AuthService{
         user.setVerificationCode(verificationCode);
         user.setEnabled(false);
 
+        AssesmentAnswerGroup assesmentAnswerGroup = new AssesmentAnswerGroup();
+        assesmentAnswerGroup.setUser(user);
+        assesmentAnswerGroup.setAssementAnsList(null);
+        user.setAssesmentAnswerGroup(assesmentAnswerGroup);
+        
+        List<History> histories = new ArrayList<>();
+        user.setHistories(histories);
+        
+
         List<Role> roleList = new ArrayList<>();
         for (Role roleItem  : user.getRole()) {
             Role role = this.roleRepository.findByRole(roleItem.getRole());
@@ -160,13 +178,6 @@ public class AuthServiceImpl implements AuthService{
         
         logger.info("The verification link is : http://localhost:4445/api/v1/verify?code="+user.getVerificationCode());
         
-        // if (user.getDocRegNo().equals("")) {
-        //     user.setDocRegNo(null);
-        // }
-        // if (user.getCounselorRegNo().equals("")) {
-        //     user.setCounselorRegNo(null);
-        // }
-
 
         this.userRepository.save(user);
         try {
@@ -281,6 +292,49 @@ public class AuthServiceImpl implements AuthService{
         
         return user;
     }
+
+    @Override
+    public VerificationCodeModel forgetPassword(String username) {
+        User user = this.userRepository.findByEmail(username);
+        if (user == null) {
+            return null;
+        }
+        String verificationCode = RandomString.make(64);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("E-MM-dd'T'HH:mm:ss.SSSZ-yyyy");
+        
+        Calendar currentTime = Calendar.getInstance();
+        currentTime.add(Calendar.MINUTE, 5);
+        String currentTimeString = dateFormatter.format(currentTime.getTime()).toString();
+
+        String timeDateBase64 = Base64.getEncoder().encodeToString(currentTimeString.getBytes());
+        verificationCode = verificationCode + "."+timeDateBase64;
+
+        if (user != null) {
+            user.setVerificationCode(verificationCode);
+        }
+        this.userRepository.save(user);
+
+        VerificationCodeModel code = new VerificationCodeModel();
+        code.setCode(verificationCode);
+
+        try {
+            this.mailService.sendResetPasswordMail("http://localhost:4445/api/v1/redirectforgetpass?code="+verificationCode, user.getEmail(), user.getName());
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return code;
+    }
+
+    @Override
+    public Integer verifyForgetPassword(String code) {
+        if (this.isVerificationCodeExpired(code)) {
+            return 199;
+        }
+        
+        return 200;
+    }
+
 
 
   
@@ -490,6 +544,110 @@ public class AuthServiceImpl implements AuthService{
         .get(0)
         .getRole().equals("counselor")))
         .toList();
+    }
+
+    @Override
+    public Integer deleteUser(String username) {
+        UserDetails currentUser = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal();
+        User currentUserFromDb = this.userRepository.findByEmail(currentUser.getUsername());
+        
+        if (currentUserFromDb == null) {
+            return 198; // user not found
+        }
+
+        List<Role> roleList = currentUserFromDb.getRole();
+        Role role = roleList.get(0);
+
+        if (role.getRole().equals("manager")) {
+            // if hte user is manager only then user will be deleted other wise not
+            User deleteAbleUser = this.userRepository.findByEmail(username);
+            if (deleteAbleUser != null) {
+                this.userRepository.delete(deleteAbleUser);
+                return 200;
+            } else {
+                return 200; // if there is no record found as the `username` then just return success code
+            }
+        }
+
+        return 199; // invalid permission
+    }
+
+    @Override
+    public AssesmentAnswerGroup saveAssesmentAnswers(List<AssesmentAnswer> assesmentAnswerList) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User authenticatedUser = this.userRepository.findByEmail(userDetails.getUsername());
+
+        AssesmentAnswerGroup assesmentAnswerGroup = authenticatedUser.getAssesmentAnswerGroup();
+
+        // check whether the assesment group already holds the data. if it yes then clear and repopulate the value again
+        if(assesmentAnswerGroup.getAssementAnsList() != null) {
+            for(AssesmentAnswer ans : assesmentAnswerGroup.getAssementAnsList()) {
+                this.assesmentAnswerRepo.delete(ans);
+            }
+        }
+
+        for (AssesmentAnswer item : assesmentAnswerList) {
+            this.logger.info("Testing the value again : "+item.getOption());
+            item.setAssesmentAnswerGroup(assesmentAnswerGroup);
+
+            this.assesmentAnswerRepo.save(item);
+        }
+        assesmentAnswerGroup.setAssementAnsList(assesmentAnswerList);
+
+        if (assesmentAnswerGroup != null) {
+            this.logger.info("Checking the availability of assesmentAnswerGroup: "+assesmentAnswerGroup.getAssementAnsList().get(0).getOption());
+        }
+
+        this.assesmentAnswerGroupRepository.save(assesmentAnswerGroup);
+
+        return assesmentAnswerGroup;
+    }
+
+    @Override
+    public boolean isIhavefilledTheAssesment() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userRepository.findByEmail(userDetails.getUsername());
+        AssesmentAnswerGroup assesmentAnswerGroup = user.getAssesmentAnswerGroup();
+
+        if(assesmentAnswerGroup.getAssementAnsList().size() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<AssesmentAnswer> getAssesmentAnswers(String username) {
+        User user = this.userRepository.findByEmail(username);
+        return user.getAssesmentAnswerGroup().getAssementAnsList();
+    }
+
+    @Override
+    public List<User> getUsersWithAssesmentFilled() {
+        List<User> userList = this.userRepository.findAll().stream()
+                .filter(item -> item.getAssesmentAnswerGroup() != null)
+                .filter(item -> item.getAssesmentAnswerGroup().getAssementAnsList().size() > 0)
+                .filter(item -> item.getDocPatientSessionId() == null)
+
+                .toList();
+        return userList;
+    }
+
+    @Override
+    public boolean rejectAppoinmentFromCounselor(String username) {
+        User user = this.userRepository.findByEmail(username);
+        List<AssesmentAnswer> assesmentAnswers = user.getAssesmentAnswerGroup().getAssementAnsList();
+        if (assesmentAnswers.size() > 0) {
+           for (AssesmentAnswer ansItem : assesmentAnswers)  {
+            try{
+                this.assesmentAnswerRepo.delete(ansItem);
+            } catch (Exception e) {
+                return false;
+            }
+           } 
+        }
+        return true;
     }
   
 }

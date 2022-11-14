@@ -8,6 +8,8 @@ import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.doccare.doccare.model.AssesmentAnswer;
+import com.doccare.doccare.model.AssesmentAnswerGroup;
 import com.doccare.doccare.model.CounselorRegModel;
 import com.doccare.doccare.model.DoctorRegNo;
 import com.doccare.doccare.model.JWTTokenModel;
@@ -23,6 +25,10 @@ public interface AuthService {
     public String getProfileImage(String username);
     public User verify(String verificationCode);
     public User resetPassword(String code,String newPassword);
+    public Integer verifyForgetPassword(String code);
+    // public VerificationCodeModel forgetPassword(String username);
+    public VerificationCodeModel forgetPassword(String username);
+
 
     
     
@@ -35,4 +41,13 @@ public interface AuthService {
     public List<User> getAllPatients();
     public List<User> getAllDoctors();
     public List<User> getAllCounselors();
+    public Integer deleteUser(String username);
+
+    public AssesmentAnswerGroup saveAssesmentAnswers(List<AssesmentAnswer> assesmentAnswerList);
+    public boolean isIhavefilledTheAssesment();
+    public List<AssesmentAnswer> getAssesmentAnswers(String username);
+    public List<User> getUsersWithAssesmentFilled();
+    public boolean rejectAppoinmentFromCounselor(String username);
+
+    // public Integer assignAPatientToADoctor(String patientUserName,String doctorUserName);
 }
